@@ -1,0 +1,28 @@
+.registration__submitBtn{
+  margin-top: 216px;
+  padding: 0;
+  background-color: #fff;
+  min-height: 50px;
+  border-radius: 2px;
+  border: 0;
+  color: #000;
+  font-family: Inter,sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  width: 100%;
+  transition: background-color .2s;
+}
+
+.registration__submitBtn:hover {
+  opacity: 0.85;
+}
+
+@media screen and (max-width:425px) {
+  .registration__submitBtn {
+    margin-top: 173px;
+
+  }
+  
+}

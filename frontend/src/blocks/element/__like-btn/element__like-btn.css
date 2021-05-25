@@ -1,0 +1,20 @@
+.element__like-btn {
+  width: 21px;
+  height: 20px;
+  background: url(../../../image/heart.svg) no-repeat center;
+  outline: none;
+  background-size: contain;
+  border-style: none;
+  object-fit: cover;
+  cursor: pointer;
+  transition: opacity .2s linear;
+}
+.element__like-btn:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 320px){
+  .element__like {
+    margin-right: 22px;
+  }
+}

@@ -1,0 +1,11 @@
+.registration__form{
+  box-sizing: border-box;
+  padding-top: 50px;
+  padding-bottom: 15px;
+}
+
+@media screen and(max-width: 425px) {
+  .registration__form{
+    padding: 40px 0 20px;
+  }
+}

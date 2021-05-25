@@ -1,0 +1,17 @@
+.header__nav-block{
+  display: flex;
+  align-items: flex-end;
+}
+
+@media screen and(max-width: 425px) {
+  .header__nav-block {
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 0;
+    height: 150px;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+  }
+  
+}

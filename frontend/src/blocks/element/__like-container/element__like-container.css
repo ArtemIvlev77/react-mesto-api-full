@@ -1,0 +1,13 @@
+.element__like-container {
+  padding-right: 10px;
+  display: grid;
+  grid-column: 1fr 1fr;
+  justify-content: space-around;
+  align-items: space-between;
+}
+
+/* @media screen and (max-width: 320px){
+  .element__like-container {
+    margin-right: 22px;
+  }
+} */

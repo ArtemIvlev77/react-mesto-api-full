@@ -1,0 +1,5 @@
+.popup__image-preview {
+  max-width: 75vw;
+  min-height: 75vh;
+  object-fit: cover;
+}

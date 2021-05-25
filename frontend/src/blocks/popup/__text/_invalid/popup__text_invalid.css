@@ -1,0 +1,7 @@
+.popup__text_invalid  {
+    border-bottom: 1px solid #FF0000;
+}
+
+.popup__text_invalid:valid {
+    border-bottom: 1px solid #000;
+}

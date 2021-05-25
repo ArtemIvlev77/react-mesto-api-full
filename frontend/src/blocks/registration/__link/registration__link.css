@@ -1,0 +1,11 @@
+.registration__link{
+  margin-left: 5px;
+  padding: 0;
+  color:#fff;
+  text-decoration: none;
+  font-family: Inter, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 17px;
+}

@@ -1,0 +1,18 @@
+.header__menu-wrap {
+  display: none;
+  justify-content: center;
+  align-content: center;
+  right: 40px;
+  bottom: 30px;
+  margin: 0;
+  padding: 0;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 680px) {
+  .header__menu-wrap {
+      display: flex;
+  }
+}

@@ -1,0 +1,20 @@
+.popup__text {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  padding-bottom: 13px;
+  box-sizing: border-box;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+}
+
+.popup__text:last-of-type {
+  margin-bottom: 0px;
+}
+

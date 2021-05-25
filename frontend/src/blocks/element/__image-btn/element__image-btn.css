@@ -1,0 +1,14 @@
+.element__image-btn {
+  background: none;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border-style: none;
+  cursor: pointer;
+  transition: opacity .2s linear;
+}
+
+
+.element__image-btn:hover {
+  opacity: .8;
+}

@@ -1,0 +1,9 @@
+.page__container {
+    min-width: 320px;
+    max-width: 882px;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+
