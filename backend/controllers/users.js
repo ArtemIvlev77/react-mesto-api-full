@@ -128,7 +128,7 @@ exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   const owner = req.user._id;
 
-  return User.findByIdAndUpdate(owner, { avatar }, { new: true })
+  return User.findByIdAndUpdate(owner, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         next(new NotFoundError('Нет пользователя с таким id'));
