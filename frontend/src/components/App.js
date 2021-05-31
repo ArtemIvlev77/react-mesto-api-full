@@ -15,11 +15,6 @@ import Login from "./Login";
 import * as auth from "../utils/auth";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({
-    _id: null,
-    avatar: "",
-  });
-
   const [cards, setCards] = useState([]);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
@@ -28,9 +23,9 @@ function App() {
   const [value, setValue] = useState({
     submit: "Сохранить",
   });
-  const [loggedIn, setLoggedIn] = useState({ loggedIn: false });
+  const [loggedIn, setLoggedIn] = useState(false);
   const history = useHistory();
-  const [userData, setUserData] = useState({
+  const [currentUser, setCurrentUser] = useState({
     _id: null,
     avatar: "",
   });
@@ -44,10 +39,10 @@ function App() {
     if (jwt) {
       api
         .getUserInfo(jwt)
-        .then(user => {
+        .then((user) => {
           setLoggedIn(true);
           history.push("/");
-          setUserData(user.data);
+          setCurrentUser(user.data);
         })
         .catch((e) => console.error(e.message));
       api
@@ -87,56 +82,53 @@ function App() {
     });
   }
 
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   const handleCardLike = (card) => {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    api
-      .toggleLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const isLiked = card.likes.some((i) => i === currentUser._id);
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      api
+        .toggleLikeCardStatus(card._id, !isLiked, jwt)
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const handleCardDelete = (card) => {
-    const isOwn = card.owner._id === currentUser._id;
-    api
-      .deleteCard(card._id, isOwn)
-      .then(() => {
-        const newCard = cards.filter((c) => c._id !== card._id);
-        setCards(newCard);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      api
+        .deleteCard(card._id, jwt)
+        .then(() => {
+          const newCard = cards.filter((c) => c._id !== card._id);
+          setCards(newCard);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   function handleAddPlaceSubmit({ name, link }) {
     setValue({ ...value, submit: "Сохраняю данные..." });
-    api
-      .addPlace(name, link)
-      .then((newCard) => setCards([newCard, ...cards]))
-      .then(() => {
-        closeAllPopups();
-        setValue({ ...value, submit: "Сохранить" });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      api
+        .addPlace(name, link, jwt)
+        .then((card) => setCards([card.data, ...cards]))
+        .then(() => {
+          closeAllPopups();
+          setValue({ ...value, submit: "Сохранить" });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   function handleUpdateUser({ name, about }) {
@@ -147,9 +139,9 @@ function App() {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       api
-        .setUserInfo(name, about, jwt)
+        .editUserInfo(name, about, jwt)
         .then(() => {
-          setUserData({
+          setCurrentUser({
             ...currentUser,
             name: name,
             about: about,
@@ -169,18 +161,31 @@ function App() {
   }
 
   function handleAvatarUpdate({ avatar }) {
-    setValue({ ...value, submit: "Сохраняю данные..." });
-    api
-      .editUserAvatar(avatar)
-      .then(() => setCurrentUser({ ...currentUser, avatar: avatar }))
-      .catch((err) => console.log(err))
-      .then(() => {
-        closeAllPopups();
-        setValue({ ...value, submit: "Сохранить" });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setValue({
+      ...value,
+      submit: "Сохраняю данные...",
+    });
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      api
+        .editUserAvatar(avatar, jwt)
+        .then(() => {
+          setCurrentUser({
+            ...currentUser,
+            avatar: avatar,
+          });
+        })
+        .then(() => {
+          closeAllPopups();
+          setValue({
+            ...value,
+            submit: "Сохранить",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   useEffect(() => {
@@ -227,12 +232,6 @@ function App() {
     localStorage.removeItem("jwt");
   }
 
-  useEffect(() => {
-    if (loggedIn) {
-      history.push("/");
-    }
-  }, [loggedIn, history]);
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -240,9 +239,19 @@ function App() {
           <div className="page__container">
             <Header
               loggedIn={loggedIn}
-              email={userData.email}
+              email={currentUser.email}
               onSignOut={handleSignout}
             />
+            <Route path="/signup">
+              <Register onRegister={handleRegister} loggedIn={loggedIn} />
+            </Route>
+            <Route path="/signin">
+              <Login
+                onLogin={handleLogin}
+                loggedIn={loggedIn}
+                checkToken={checkToken}
+              />
+            </Route>
             <Switch>
               <ProtectedRoute
                 loggedIn={loggedIn}
@@ -257,16 +266,6 @@ function App() {
                 onAddPlace={handleAddPlaceClick}
                 onEditAvatar={handleEditAvatarClick}
               />
-              <Route path="/signup">
-                <Register onRegister={handleRegister} loggedIn={loggedIn} />
-              </Route>
-              <Route path="/signin">
-                <Login
-                  onLogin={handleLogin}
-                  loggedIn={loggedIn}
-                  checkToken={checkToken}
-                />
-              </Route>
             </Switch>
             <Footer />
 

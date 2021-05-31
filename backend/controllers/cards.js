@@ -12,11 +12,6 @@ exports.createCard = (req, res, next) => {
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        throw new BadRequestError('Данные не прошли валидацию');
-      }
-    })
     .catch(next);
 };
 

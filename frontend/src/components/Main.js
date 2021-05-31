@@ -10,6 +10,7 @@ const Main = (props) => {
     <Card
       key={cards._id}
       card={cards}
+      owner={cards.owner}
       onCardClick={props.onCardClick}
       onCardLike={props.onCardLike}
       onCardDelete={props.onCardDelete}

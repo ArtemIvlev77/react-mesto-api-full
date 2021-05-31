@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
       NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
     );
   } catch (err) {
-    throw new UnauthorizedError('Не удалось авторизироваться');
+    throw new UnauthorizedError('Доступ запрещен');
   }
 
   req.user = payload;

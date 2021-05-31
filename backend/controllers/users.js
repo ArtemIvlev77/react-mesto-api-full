@@ -34,14 +34,14 @@ exports.getUsers = (req, res, next) => {
 
 exports.getMe = (req, res, next) => {
   const { authorization } = req.headers;
-  if (!authorization || authorization.startsWith('Bearer ')) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     return res.status(401).send({ message: 'нет доступа' });
   }
 
   const token = authorization.replace('Bearer ', '');
   const isAuthorised = () => {
     try {
-      return jwt.verify(token, 'super_secret_key');
+      return jwt.verify(token, JWT_SECRET);
     } catch (err) {
       return false;
     }
