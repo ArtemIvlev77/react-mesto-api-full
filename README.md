@@ -3,5 +3,5 @@
   
 https://mestoivlev.students.nomoredomains.icu/  
 
-https://api.mestoivlev.students.nomoredomains.icu/users/me
+https://api.mestoivlev.students.nomoredomains.icu/
 
